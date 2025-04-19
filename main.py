@@ -1,11 +1,11 @@
-from flask import Flask, render_template
+from flask import Flask, render_template,request
 import requests
 import datetime
 
 year_now = datetime.datetime.today().strftime("%Y")
 req = requests.get("https://api.npoint.io/c790b4d5cab58020d391")
 all_post = req.json()
-print(all_post)
+
 
 app = Flask(__name__)
 
@@ -15,6 +15,15 @@ def home():
 @app.route('/contact')
 def get_contact():
     return render_template("contact.html",year_now=year_now)
+@app.route("/form-entry",methods=["POST"])
+def receive_data():
+    name = request.form["name"]
+    email = request.form["email"]
+    phone_num = request.form["phone"]
+    message = request.form["message"]
+    #the details can be saved in a CSV or they can be sent as an email using smtb lib
+    return "<h1>Data sent</h1>"
+
 @app.route('/about')
 def get_about():
     return render_template("about.html",year_now=year_now)
